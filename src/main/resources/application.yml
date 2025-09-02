@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: "StarWrapper"
+feign:
+  okhttp:
+    enabled: true
+
+logging:
+  level:
+    feign: DEBUG
