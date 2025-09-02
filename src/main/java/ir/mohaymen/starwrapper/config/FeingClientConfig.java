@@ -18,17 +18,15 @@ public class FeingClientConfig {
     }
 
 
-    // این رو اضافه کن 👇
     @Bean
     public OkHttpClient feignClient() {
-        return new OkHttpClient.Builder()
-                .followRedirects(false)          // ❌ ریدایرکت عادی را غیرفعال می‌کند
-                .followSslRedirects(false)       // ❌ ریدایرکت HTTPS را هم غیرفعال می‌کند
-                .build();
+        return new OkHttpClient.Builder().followRedirects(false)
+                                         .followSslRedirects(false)
+                                         .build();
     }
 
     @Bean
     Logger.Level feignLoggerLevel() {
-        return Logger.Level.FULL; // لاگ کامل درخواست و پاسخ
+        return Logger.Level.FULL;
     }
 }
