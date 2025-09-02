@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "AM-service", url = "https://web-star-nta.abriment.mohaymen.ir", configuration = FeingClientConfig.class // املای درست
+@FeignClient(name = "AM-service", url = "${am.service.url}", configuration = FeingClientConfig.class // املای درست
 )
 public interface AMClient {
 

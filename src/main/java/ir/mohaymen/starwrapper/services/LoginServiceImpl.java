@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+
 
 import java.util.List;
 
@@ -15,18 +17,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
+    @Value("${am.service.url}")
+    private String amServiceUrl;
+
+    @Value("${am.service.enginName}")
+    private String amEngineName;
+
+    @Value("${am.service.enginVersion}")
+    private String amEngineVersion;
+
+    @Value("${am.service.multiTech}")
+    private boolean amMultiTech;
+
+    @Value("${am.service.inputAsArray}")
+    private boolean amInputAsArray;
+
+    @Value("${am.service.handlingMode}")
+    private int amHandlingMode;
+
     private final AMClient amClient;
 
     @Override
     public ResponseEntity<JsonNode> login(String username, String password) {
 
         LoginRequest.Client client =
-                new LoginRequest.Client("web", List.of("https://web-star-nta.abriment.mohaymen.ir/"), List.of("openid", "profile"));
+                new LoginRequest.Client("web", List.of(amServiceUrl+'/'), List.of("openid", "profile"));
 
         LoginRequest loginRequest = new LoginRequest(client, password, username, NonceGenerator.generate(), null, null);
 
         // درخواست به میکروسرویس B
-        ResponseEntity<JsonNode> response = amClient.login("AM", "403.1.1493.0", false, true, 1, List.of(loginRequest));
+        ResponseEntity<JsonNode> response = amClient.login(amEngineName, amEngineVersion, amMultiTech, amInputAsArray, amHandlingMode, List.of(loginRequest));
 
         // گرفتن تمام Set-Cookie ها
         List<String> setCookies = response.getHeaders().get(HttpHeaders.SET_COOKIE);
